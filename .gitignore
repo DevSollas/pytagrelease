@@ -25,3 +25,7 @@ htmlcov/
 # OS/editor
 .DS_Store
 .vscode/*.code-workspace
+
+# github files
+.github/
+
