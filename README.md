@@ -61,3 +61,21 @@ ruff check .
 mypy .
 pytest
 ```
+
+## Fresh Environment Reproducibility
+
+This repository includes two reproducibility mechanisms:
+
+- GitHub Actions workflow: `.github/workflows/reproducibility.yml`
+	- Fresh Python environment checks on `3.11` and `3.12`
+	- Lint, type-check, and tests
+- Docker reproducibility check:
+	- Build with `Dockerfile`
+	- Run the same quality checks inside the container
+
+Run Docker reproducibility locally:
+
+```bash
+docker build -t pytagrelease-repro .
+docker run --rm pytagrelease-repro
+```
