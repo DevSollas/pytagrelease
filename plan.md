@@ -177,41 +177,48 @@ Build an MVP Python project scaffold for an API-first service that takes a Music
 	- End-to-end suite green in CI.
 	- Documentation validated against real setup/test execution.
 
-**Missing Execution Controls**
+**Execution Controls**
 
 1. Phase gates and deliverables
-- Define concrete outputs per phase (for example: phase 2 service contracts frozen, phase 3 endpoint contract published, phase 4 CI green with coverage threshold).
-- Add explicit gate checks before moving to the next phase.
+- Phase 1 deliverables:
+	- `pyproject.toml`, `.env.example`, and logging/config bootstrap are present and documented.
+	- Local quality commands (`lint`, `type`, `test`) execute from repo root.
+	- Required settings and defaults are validated by tests.
+- Phase 1 gate (Go/No-Go):
+	- 100% pass on P1 tests.
+	- No blocker issues in setup/config bootstrap.
+	- Reproducible clean setup is verified by one fresh-environment run.
 
-2. Ownership and timeline
-- Assign an owner for each phase and major task group.
-- Add target start/end dates and rough effort estimates.
+- Phase 2 deliverables:
+	- Service modules implemented: MusicBrainz adapter, scanner, matcher, copier, tagger.
+	- Domain schemas and service-level error types are stable.
+	- Matching and tagging behavior documented, including ambiguous-selection flow and `clear_metadata` policy.
+- Phase 2 gate (Go/No-Go):
+	- 100% pass on P2 tests.
+	- No data-loss defects open (especially around copy and metadata write behavior).
+	- Service contracts are frozen for API integration.
 
-3. Risk register and mitigation plan
-- Track each risk with: impact, likelihood, trigger, mitigation, and fallback.
-- Start with top risks: wrong album matching, metadata loss, external API failures, and long-running file operations.
+- Phase 3 deliverables:
+	- API endpoints implemented and documented: health, scan preview, tag create, candidate finalize, job status.
+	- Request/response and error payload schemas finalized.
+	- Deterministic error mapping from service exceptions to HTTP responses.
+- Phase 3 gate (Go/No-Go):
+	- 100% pass on P3 tests.
+	- Endpoint contract snapshots approved.
+	- No unresolved High severity API defects.
 
-4. API operational model
-- Specify synchronous vs asynchronous execution for tag jobs.
-- Define job lifecycle: create, running, waiting-for-selection, completed, failed, expired.
-- Define idempotency strategy, retry policy, and job retention/TTL.
+- Phase 4 deliverables:
+	- End-to-end integration suite and CI pipeline finalized.
+	- Coverage report generated and threshold enforced.
+	- README runbook validated from clean clone to successful API workflow.
+	- Release-readiness report produced (quality summary, known risks, residual issues).
+- Phase 4 gate (Release Go/No-Go):
+	- 100% pass on P4 tests.
+	- CI is green on default branch.
+	- Coverage threshold met for core modules.
+	- No unresolved blocker/critical defects.
 
-5. Security and abuse controls
-- Define authentication requirements for non-local usage.
-- Add rate limits and request size limits.
-- Enforce path safety constraints to prevent traversal and writes outside approved roots.
+- Governance rule for gate transitions:
+	- A phase cannot start implementation work until the previous phase gate is marked Go.
+	- Exceptions require explicit approval and a recorded risk note in the plan.
 
-6. Observability baseline
-- Define required structured log fields (for example: request_id, job_id, release_id, source_path, destination_path, error_code).
-- Define metrics (success/failure counts, job duration, scan duration, ambiguous match rate).
-- Define alert thresholds for repeated failures and API instability.
-
-7. Release and rollback policy
-- Define semantic versioning policy for API and behavior changes.
-- Define release checklist and rollback procedure.
-- Include migration notes when request/response contracts change.
-
-8. Environment matrix and reproducibility
-- Define supported Python versions and OS matrix for local/CI validation.
-- Define fixture strategy for repeatable tests (small, deterministic FLAC fixtures and mocked MusicBrainz payloads).
-- Ensure local commands and CI commands are aligned to avoid drift.
