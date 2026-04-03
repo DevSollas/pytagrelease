@@ -26,5 +26,6 @@ htmlcov/
 .DS_Store
 .vscode/*.code-workspace
 
-# Keep GitHub workflows and configuration tracked
+# GitHub prompts
+.github/prompts/
 
