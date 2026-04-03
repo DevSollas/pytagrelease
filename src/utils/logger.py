@@ -13,8 +13,10 @@ def configure_logging(level: str = "INFO") -> None:
     if _CONFIGURED:
         return
 
+    numeric_level = getattr(logging, level.upper(), logging.INFO)
+
     logging.basicConfig(
-        level=getattr(logging, level.upper(), logging.INFO),
+        level=numeric_level,
         format="%(asctime)s %(levelname)s %(name)s %(message)s",
     )
 
@@ -24,7 +26,7 @@ def configure_logging(level: str = "INFO") -> None:
             structlog.processors.add_log_level,
             structlog.processors.JSONRenderer(),
         ],
-        wrapper_class=structlog.make_filtering_bound_logger(logging.INFO),
+        wrapper_class=structlog.make_filtering_bound_logger(numeric_level),
         logger_factory=structlog.stdlib.LoggerFactory(),
         cache_logger_on_first_use=True,
     )

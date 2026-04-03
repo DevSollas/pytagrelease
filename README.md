@@ -25,6 +25,23 @@ pip install -e .[dev]
 cp .env.example .env
 ```
 
+### Configuration
+
+The app reads runtime settings from environment variables (or `.env`):
+
+- `APP_ENV`: `development`, `test`, or `production`
+- `APP_HOST`: API bind host (default `0.0.0.0`)
+- `APP_PORT`: API bind port (default `8000`)
+- `LOG_LEVEL`: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`
+- `MUSIC_SOURCE_ROOTS`: comma-separated source roots to scan
+- `TAGGED_OUTPUT_ROOT`: destination root for tagged copies
+- `CLEAR_METADATA`: `true` or `false`
+- `MUSICBRAINZ_USER_AGENT`: MusicBrainz client user agent
+- `MUSICBRAINZ_TIMEOUT_SECONDS`: request timeout
+- `MUSICBRAINZ_RATE_LIMIT_PER_SECOND`: max request rate
+
+`MUSIC_SOURCE_ROOT` is also accepted for backward compatibility.
+
 ### Run API
 
 ```bash
