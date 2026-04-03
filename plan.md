@@ -176,3 +176,42 @@ Build an MVP Python project scaffold for an API-first service that takes a Music
 	- All blocking defects closed.
 	- End-to-end suite green in CI.
 	- Documentation validated against real setup/test execution.
+
+**Missing Execution Controls**
+
+1. Phase gates and deliverables
+- Define concrete outputs per phase (for example: phase 2 service contracts frozen, phase 3 endpoint contract published, phase 4 CI green with coverage threshold).
+- Add explicit gate checks before moving to the next phase.
+
+2. Ownership and timeline
+- Assign an owner for each phase and major task group.
+- Add target start/end dates and rough effort estimates.
+
+3. Risk register and mitigation plan
+- Track each risk with: impact, likelihood, trigger, mitigation, and fallback.
+- Start with top risks: wrong album matching, metadata loss, external API failures, and long-running file operations.
+
+4. API operational model
+- Specify synchronous vs asynchronous execution for tag jobs.
+- Define job lifecycle: create, running, waiting-for-selection, completed, failed, expired.
+- Define idempotency strategy, retry policy, and job retention/TTL.
+
+5. Security and abuse controls
+- Define authentication requirements for non-local usage.
+- Add rate limits and request size limits.
+- Enforce path safety constraints to prevent traversal and writes outside approved roots.
+
+6. Observability baseline
+- Define required structured log fields (for example: request_id, job_id, release_id, source_path, destination_path, error_code).
+- Define metrics (success/failure counts, job duration, scan duration, ambiguous match rate).
+- Define alert thresholds for repeated failures and API instability.
+
+7. Release and rollback policy
+- Define semantic versioning policy for API and behavior changes.
+- Define release checklist and rollback procedure.
+- Include migration notes when request/response contracts change.
+
+8. Environment matrix and reproducibility
+- Define supported Python versions and OS matrix for local/CI validation.
+- Define fixture strategy for repeatable tests (small, deterministic FLAC fixtures and mocked MusicBrainz payloads).
+- Ensure local commands and CI commands are aligned to avoid drift.
